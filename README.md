@@ -251,6 +251,7 @@ Files in the app directory represent the application routes (using Expo Router's
 - **add-vehicle.tsx**: Form for adding a new vehicle
 - **fine-history.tsx**: Shows history of fines for the current user's vehicles
 - **fine-details.tsx**: Detailed view of a specific fine
+- **IssueFineScreen.tsz**: Screen for assinging fine
 - **tow-history.tsx**: History of tows for the current user's vehicles
 - **tow-details.tsx**: Detailed view of a specific tow
 - **complaint.tsx**: Form for submitting a complaint
@@ -293,6 +294,7 @@ Files in the app directory represent the application routes (using Expo Router's
 - **TowRequestsScreen.tsx**: Screen for managing tow requests
 - **FineHistoryScreen.tsx**: Screen showing fine history
 - **FineDetailsScreen.tsx**: Screen showing detailed information about a fine
+- **IssueFineScreen.tsz**: Screen for assinging fine
 - **ComplaintScreen.tsx**: Form for submitting complaints
 - **MyComplaintsScreen.tsx**: List of user's complaints
 - **ComplaintReviewScreen.tsx**: Screen for staff to review complaints
