@@ -1,0 +1,276 @@
+Towify App – Updated Full Description (React Native + Supabase)
+Purpose: Towify is a university-level mobile application built using React Native. It helps manage vehicle towing, fine issuance, and record tracking with support for real-time alerts and basic payment tracking. It supports three main user roles: vehicle owners, towing company staff, and law enforcement officers. The app uses Supabase for backend services including authentication, database management, and API access.
+
+🎯 Key Features (Organized by Role)
+
+User Authentication & Role-Based Access (via Supabase Auth)
+Secure email/password login powered by Supabase Auth
+
+Three distinct roles:
+Vehicle Owner
+Tow Company Staff
+Law Enforcement Officer
+
+After login, users are routed to role-specific dashboards with relevant permissions
+
+Vehicle Records (Stored in Supabase DB)
+
+Register and manage vehicles with:
+License Plate Number
+Model
+Color
+Linked Owner ID
+
+Lookup vehicles by license plate to view ownership, fines, and tow history
+
+Towing Management (Staff & Officers)
+
+Record vehicle towing events manually:
+Plate number
+Tow location
+Tow date/time (default: current timestamp)
+Assign fines during the tow process (optional)
+Towing history is stored and retrievable by plate number
+Vehicles with repeated towing incidents or unpaid fines are flagged in the UI
+
+Fine Management
+
+Officers can issue fines to a vehicle:
+Amount, description, issue date
+
+Vehicle owners can:
+View list of fines (with paid/unpaid status)
+Filter by status or issue date
+All fine data is stored and synced using Supabase tables
+
+Mock Payment System
+Vehicle owners can simulate fine payments through a mock interface
+After confirming payment, fine status is updated to "paid"
+A mock receipt is generated with a fake transaction ID
+
+In-App Notification System
+Supabase Realtime or polling used to fetch user-specific notifications
+
+Notifications sent when:
+Vehicle is towed
+A new fine is issued
+A complaint is responded to
+Notifications include timestamp and message; users can mark as read
+
+Towing & Fine History Viewer
+Owners can view full towing history of their vehicles
+Officers/staff can view full towing/fine history of any searched vehicle
+Highlight repeated violations or unpaid fines
+
+Complaint & Appeal System
+Owners can submit appeals/complaints against a tow or fine
+Includes a message and the related fine or tow ID
+Staff or officers can view, resolve, and update complaint status
+
+Role-Specific Dashboards
+
+Owner Dashboard:
+View vehicles, fines, history, alerts, and file complaints
+
+Staff Dashboard:
+Record tows, search vehicles, view history
+
+Officer Dashboard:
+Issue fines, view complaints, search vehicle records
+
+🔐 Supabase Backend Integration
+
+Supabase Auth handles secure login and user role storage (via user metadata or role tables)
+
+Supabase Database used to store:
+
+Users, Vehicles, Fines, Tows, Complaints, Notifications
+
+Supabase API (auto-generated) handles all read/write actions
+
+Optional use of Supabase Realtime for live updates (e.g., notifications)
+
+🛠️ Tech Stack
+
+Frontend: React Native (Expo or CLI)
+
+Backend: Supabase (PostgreSQL, Auth, Realtime, Storage)
+
+API Calls: Supabase Client SDK
+
+UI Components: React Native Elements, React Navigation, Tailwind (optional)
+
+Version Control: Git + GitHub (with clear branches & commits)
+
+📁 Suggested Folder Structure (React Native)
+
+/src
+
+/screens (Login, Dashboard, FinePayment, TowEntry, etc.)
+
+/components (Reusable UI: NotificationCard, FineItem, etc.)
+
+/api (Supabase setup & functions)
+
+/context (User session management)
+
+/utils (Constants, helpers)
+
+/assets (Images, icons)
+
+📂 Supabase Tables
+
+users (auth.users extended with custom profile data & role)
+
+vehicles
+
+tows
+
+fines
+
+notifications
+
+complaints
+
+🎓 Project Scope
+
+Designed for a university-level capstone or semester project
+
+Focuses on functionality, database integration, and clean UI
+
+Scalable and extendable (can be expanded into a real-world MVP)
+
+Total Estimated Screens (Mobile App): We’ll need approximately 12 main screens to support all roles and functionalities.
+
+🚧 Development Order (From First to Last)
+
+SplashScreen
+
+Purpose: App loading screen that checks if user is already logged in.
+
+Functionality:
+
+If logged in → redirect to appropriate dashboard based on role
+
+If not → redirect to LoginScreen
+
+LoginScreen
+Purpose: Allow users to log in using email & password via Supabase Auth
+Functionality:
+Inputs: Email, Password
+Submit → authenticate with Supabase
+On success → redirect to Dashboard based on role (owner, staff, officer)
+
+OwnerDashboardScreen
+For role = 'owner'
+Functionality:
+View list of owned vehicles
+View total fines
+Button links to: MyFines, MyTows, Notifications, Complaints
+
+StaffDashboardScreen
+For role = 'staff'
+Functionality:
+Button to "Record Tow"
+Search vehicle by plate number
+View tow history
+Link to notifications
+
+OfficerDashboardScreen
+For role = 'officer'
+Functionality:
+Issue Fine
+Search Vehicle Records
+View and resolve complaints
+Access to all tow history
+
+VehicleListScreen (Owner Only)
+Purpose: Show a list of vehicles owned by the user
+Functionality:
+Pull from Supabase where owner_id = current user ID
+Tap vehicle → navigate to TowHistory or FineHistory
+
+TowHistoryScreen
+Purpose: Show towing history of a selected vehicle
+Functionality:
+Query Supabase for all tows related to vehicle_id
+Highlight tows with unpaid fines
+If accessed by officer/staff → show more detail
+
+FineHistoryScreen / MyFinesScreen
+Purpose: View all fines linked to user’s vehicles
+Functionality:
+Supabase query for fines where vehicle.owner_id = current user ID
+Show status: Paid / Unpaid
+Option to tap and pay (if unpaid)
+
+FinePaymentScreen
+Purpose: Mock screen to simulate payment
+Functionality:
+Show fine info
+Button to “Confirm Payment”
+On press → update fine in Supabase (status = 'paid')
+
+RecordTowScreen (Staff/Officer)
+Purpose: Tow company staff can record a tow
+Functionality:
+Input: plate number, location, (optional) fine details
+Check if vehicle exists → show info
+Add tow record to Supabase (tows table)
+Optional: issue fine alongside tow
+
+IssueFineScreen (Officer)
+Purpose: Officers can issue fines manually
+Functionality:
+Input: plate number, amount, description
+Link fine to vehicle
+Add entry to fines table
+
+ComplaintScreen (Owner)
+Purpose: Owners can submit a complaint about a tow/fine
+Functionality:
+Select tow or fine
+Enter message
+Submit to Supabase (complaints table)
+Officer can view and resolve in another screen
+
+NotificationScreen (All Roles)
+Purpose: Display notifications sent to the user
+Functionality:
+Supabase table “notifications” (filter by user_id)
+Mark as read
+Show type of alert (tow, fine, resolved complaint)
+
+Optional/Extra Screens
+ProfileScreen (edit name/email etc.)
+RegisterScreen (if you want user sign-up in app — can skip for now)
+
+🗂 Summary of Screens 
+
+1. SplashScreen
+
+2. LoginScreen
+
+3. RegisterScreen
+
+4.OwnerDashboardScreen
+
+5.StaffDashboardScreen
+
+6.OfficerDashboardScreen
+
+7.VehicleListScreen
+
+8.TowHistoryScreen
+
+9.FineHistoryScreen
+
+10.FinePaymentScreen
+
+11.RecordTowScreen
+
+12.IssueFineScreen
+
+13.ComplaintScreen
+
+14.NotificationScreen
